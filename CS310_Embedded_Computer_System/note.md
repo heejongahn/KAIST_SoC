@@ -33,3 +33,26 @@ IT의 미래라고 불리는
 System(CPS) = Embedded System(ES) + physical environment
 
 # 오늘 수업은 필기를 안 해도 될 것 같다.
+
+> 2015-09-03
+
+요새 기술이 좋아져서 얼마나 기술 좋은 임베디드 시스템 구현하려 하든지 구현의
+비용에는 큰 차이가 없다 (cost of implementation<-> functionality : independent)
+
+### Dependability
+Many CPS are safety-critical
+- reliability R(t) : t=0에서 정상 작동할 때 시간 t에서도 정상적으로 작동할 확률
+- maintainability M(t) : 에러가 난 이후 d time unit이 지난 후 정상적으로 작동할
+    확률
+- availability A(t) : 시간 t에서 정상 작동할 확률
+- safety, security
+
+Availability = MTBF / (MTBF + MTTR)
+
+### Efficiency
+CPS & ES must be efficient
+- code-size efficient
+- run-time efficient
+- weight efficient
+- cost efficient
+- energy effi
