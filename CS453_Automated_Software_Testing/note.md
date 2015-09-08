@@ -220,4 +220,93 @@ void q() {y=z+1; z=x+1; x=y+1;}
 Mutual Exclusion Algorithm < 이거 찾아보자
 Data race bugs, Atomicity bugs 이것들도... 는 이 수업에서 안 한다네요
 
+> 2015-09-09
 
+### Foundation of Software Testing
+
+SW = Spec + Program + Test case
+
+Multiple targets for SW testing:
+1. Does the test cases represent the requirement spec correctly?
+    Scenario based testing (black-box testing) : Easy to understand
+2. Is the design spec implemeted as program correctly?
+    Model-based testing (grey-box testing)
+3. Does the program satistfy test cases correctly?
+    Code-based testing (white-box testing)
+
+Test Cases **represents** Specs.
+Specs is **implemented** in a program.
+A Program is **executed** with test cases.
+
+black -> grey -> white 로 갈수록 엄밀하지만 그만큼 테스트를 잘 하기가 어려워진다.
+
+중고차를 살 때를 생각해봐. 근데 차의 50%는 까만 천으로 덮혀 있어서 어떻게
+생겼는지도 몰라. 너같으면 사겠니? 그게 50% 브랜치 커버리지로 테스팅 된
+소프트웨어나 다름이 없어.
+
+우리는 3번에 집중한다!!!!
+
+### Black Box Testing
+
+버그를 드러낼지도 모르는 다중의 테스트 케이스를 만드는 것을 목표로 함.
+코드는 무시한 채로 타겟 프로그램의 입출력만을 고려.
+
+Examples
+1. Requirement specification based testing
+2. Random input generation testing
+3. Category partitioning method (input domain을 clarify -> classify)
+4. T-way testing
+
+장점: 직관적이고 간단함, 큰 전문성이나 노력이 요구되지 않음 (싼게 비지떡)
+
+### White Box Testing
+프로그램 코드 자체를 테스트한다.
+
+코드?
+- as a graph (structural coverage)
+- as a set of logic formulas (logical coverage)
+- as a set of execution paths (behavioral/dynamic coverage)
+
+장점: 일반적으로 훨씬 효과적이다. 커버리지에 따라 테스팅의 진행도 정량화 가능.
+
+블랙박스 테스팅이랑 함께 쓰면 매우 효과적. -> 블랙박스는 닫힌 문 앞에서 방 안에
+바퀴벌레가 있는지 냄새 맡고 하는 식으로 추측하는거라면 화이트박스는 직접 방에
+들어가서 한 군데 한 군데 뒤져보면서 확인하는 것.
+
+### Graph Coverage
+
+이론적으로, 타겟 프로그램을 그래프로 볼 수 있다. Graph Coverage ppt 두 번째
+슬라이드 명심하세요. Hierachy of graph SW coverage!!! Test suit의 test cases가
+이걸 다 커버하는지 봐야된당
+
+"This test suit reaches 100% node coverage!"
+"This test suit satisfy edge coverage!"
+
+하이어라키에서 높은 레벨에 있을수록 higher bug detection power. 당연히 높은
+레벨에 있을수록 test case 수도 많아지고 만들기도 힘들겠지?
+
+Complete Path Coverage를 이뤘다고 한들 Complete Value Coverage를 이룬 것은
+아니란다.
+
+- Test Path : 이니셜 노드 -> 파이널 노드로 가는 패th
+- SESE Graph : Single Entry, Single Exit for all test paths
+
+- Path can *visit* node/edge, *tour* subpath
+
+A location in a graph can be reached
+- Syntatically: a subpath exists in the graph
+- Semantically: a test exitst that executes that subpath
+
+### Deterministic / Non-Deterministic
+
+- Deterministic : a test always executes the same test path
+- Non : a test can execute different test paths
+
+Non -> Det : 가능하지만 performance penalty가 쩔텐데....;
+
+### Coverage
+
+node / edge coverage가 다른 경우 : if-else statement를 생각해보면...
+ex) nodes = {0, 1, 2}, edges = {(0,1), (1,2), (0,2)}
+
+node coverage < edge coverage < edge-pair coverage < complete path coverage
