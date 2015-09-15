@@ -310,3 +310,69 @@ node / edge coverage가 다른 경우 : if-else statement를 생각해보면...
 ex) nodes = {0, 1, 2}, edges = {(0,1), (1,2), (0,2)}
 
 node coverage < edge coverage < edge-pair coverage < complete path coverage
+
+> 2015-09-14
+
+### Coverage (continued...)
+
+커버리지는 테스트의 효과에 대한 좋은 지표가 될 수 있다. 한 프로그램에 대해
+테스트 케이스를 아무리 많이 돌렸다 한들 아무런 의미없는 짓이 될 수 있음. 비슷한
+의미를 갖는 테스트를 redundant하게 반복한들 무의미. 커버리지와 오류 발견
+능력간엔 양의 상관관계 존재하는 커버리지 메트릭 사용.
+
+Questions about SW Testing Quality:
+- Quality of test input
+- Quality of test execution
+- Quality of oracle (most important)
+
+오라클이 중요한데.. 소팅같은 엄청 간단한 문제가 아니면 적합한 오라클을 만들기가
+어렵다. AVL tree 같은 것만 생각해 보더라도... 실제로 사용되는 프로그램 같은
+경우는 어떠겠냐? 빡세겠지? 그래서 MS에서 (테스트에 쓰이는 코드의 LoC) ~ (실제
+개발 코드 LoC) * 3 이란겨.
+
+아무튼... 그래서 다음 질문은 : 이 수많은 coverage criteria 중 어떤 녀석이 가장
+좋을까? 즉, 어떤 커버리지 메트릭이 커버리지와 오류 발견 능력간의 큰 양의
+상관관계를 가질까? 주로 hierachy의 위에 있을수록 그러하다.
+
+### Sidetrip & Detour
+
+0 -> 1 -> 2 -> 4 -> 5 의 Touring을 생각해보자.
+- w/ sidetrip : 0 -> 1 -> 2 -> 3 -> 2 -> 4 -> 5
+- w/ detour : 0 -> 1 -> 2 -> 3 -> 4-> 5
+
+중간에 뭐가 낑기면 sidetrip, 모든 node가 순서에 맞게 들어 있는 다른 path면
+detour.
+
+### Weaknesses of the Purely Structural Coverage
+
+순수한 구조적 커버리지 (브랜치 커버리지)등을 다 만족한다고 해서 타겟
+소프트웨어가 충분히 테스트되었다고 절대 말 못함. 의미적인 테스팅 (semantic
+testing) 필요함.
+
+- 커버리지 메트릭이 왜 중요하냐?
+    커버리지와 오류 발견 확률이 높을수록 SW의 퀄리티 향상시키기가 좋아용.
+- 산업계에서 왜 브랜치 커버리지가 인기있냐?
+    버그 찾기는 어려울지 몰라도 적은 비용으로 달성 가능하다.
+- 실제로 prime path coverage는 왜 안 쓰이니?
+    매뉴얼하게 달성하기에는 너무 비싸다....
+- 실제 프로그램에서 100% 브랜치 커버리지 달성하기 힘든 이유?
+    특정 브랜치로 분기하기 위한 조건이 까다로운 경우가...
+
+### Data Flow Coverage
+
+Variable의 등장. 특정 노드에서 정의되거나 사용됨.
+- DU Pair : 어떤 변수가 i에서 정의되고 j에서 사용될 때 (l_i, l_j) pair
+- Def-clear : l_1 에서 l_2까지 어떤 경로에 대해 그 안에서 변수 v의 값이 변하지
+    않으면 그 사이에서 v는 def-clear 하다고 말한다. 이 때 l_1에서의 v의 정의는
+    l_2에서의 사용까지 reach한다고 말함.
+- DU Path : 어떤 v에 대해 def-clear한 **simple** subpath.
+- du-tour : 어떤 path의 def-clear한 subpath
+
+Data flow coverage criteria
+- Make sure every def reaches a use (All-defs coverage)
+- Make sure every def reaches all possible uses (All-uses coverage)
+- Cover all the paths between defs and uses (All-du-paths coverage)
+
+#### 그래프에서 커버리지간의 포함관계 설명할 수 있어야...
+
+매 iteration마다 값을 업데이트하는 loop는 data flow coverage의 관심 밖.
