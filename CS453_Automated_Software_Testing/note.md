@@ -376,3 +376,47 @@ Data flow coverage criteria
 #### 그래프에서 커버리지간의 포함관계 설명할 수 있어야...
 
 매 iteration마다 값을 업데이트하는 loop는 data flow coverage의 관심 밖.
+
+> 2015-09-17
+
+### Overview
+
+How to make a graph out of your target program?
+- Most commonly, the source code
+
+이렇게 얻어진 그래프를 CFG(Control FLow Graph)라 부름.
+- 노드 : (sequence of) statement(s) - basic blocks
+- 엣지 : 제어권의 이동
+- basic block : 다같이 실행되거나 다같이 안 실행되거나 둘 중 하나인 seq. of sta.
+    (당연히 안에는 branch가 없다)
+
+`python
+a = 10;
+b = 10;
+c = 10;
+if c > 10 :
+    f(x)
+else:
+    y(x)
+`
+
+[1-3]은 확실히 basic block, [1-5]는 확실히 아니고, [1-4]는 'execute'의 정의가
+뭐냐에 따라 달라질 수 있다...
+
+각 노드에서 branch의 개수만큼의 outgoing edge가 생김. 하나의 basic block마다
+하나의 노드. (explicit/implicit) 리턴문 개수만큼의 terminal node가 생길듯...?
+루프를 구현하기 위해선 보통 dummy node가 필요함.
+
+switch문 같은 경우 그래프로 변환할 수 있는 방법이 여러개일텐데... (한 노드에서
+많은 outgoing / 다중 if-else로 해석) 어떻게 하는게 효과적인가? cyclomatic
+complexity라는 메트릭으로 보자.
+
+Cyclomatic complexity - 정량적으로 여러 code segment들의 복잡한 정도를 계산하는
+알고리즘. 가장 직관적으로 정의하자면 **# of branches + 1**. 버그가 있을 확률과
+이녀석간엔 높은 양의 상관관계가 있다. **E-N+2P**
+
+기존의 코드를 리팩토링 할 경우 똑같은 test suite에 대한 커버리지 결과가 다른
+경우가 많다. 그렇다면 코드의 의미도 같고 테스트도 같은데 달라져버리는
+커버리지라는 metric은 눈속임일 뿐이냐? 케바케 ㅋ
+
+지역 변수 선언했으면 초기화하는 습관을 들이렴~ 네~
